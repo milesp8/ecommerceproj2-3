@@ -1,5 +1,5 @@
 {
-  "name": "milesphillipsnodetscstarter",
+  "name": "ecommercepro2-3",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
@@ -33,13 +33,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/milesp8/NodeTypescriptStarter.git"
+    "url": "git+https://github.com/milesp8/ecommerceproj2-3.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/milesp8/NodeTypescriptStarter/issues"
+    "url": "https://github.com/milesp8/ecommerceproj2-3/issues"
   },
-  "homepage": "https://github.com/milesp8/NodeTypescriptStarter#readme"
+  "homepage": "https://github.com/milesp8/ecommerceproj2-3#readme"
 }
