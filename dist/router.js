@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const controller_1 = require("./controller");
 class ApiRouter {
@@ -13,6 +14,7 @@ class ApiRouter {
     // Creates the routes for this router and returns a populated router object
     getRouter() {
         this.router.get("/hello", this.controller.getHello);
+        this.router.get("/user", this.controller.getUser);
         this.router.post("/hello", this.controller.postHello);
         return this.router;
     }
