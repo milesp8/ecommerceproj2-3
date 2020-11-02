@@ -2,17 +2,20 @@ import express from "express";
 import mongoose, { Schema, Document } from 'mongoose'; 
 import Products from "../schema/productSchema";
 import Customers from "../schema/customerSchema";
+import dotenv, { config } from 'dotenv'
 
 
-//Connection string to cloud db
-const uri: string = 
-    'mongodb+srv://user_1:dprD43S8Ukkxm0iX@ecomproj.ynpce.mongodb.net/store?retryWrites=true&w=majority'
-
-mongoose.set('useUnifiedTopology', true);
-
+//dotenv config parsing env variables
+dotenv.config();
 
 // mongoose connection to db
-mongoose.connect(uri, { useNewUrlParser: true }, (err: any) => {
+mongoose.connect(process.env.DB_URI, {
+        dbName: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        pass: process.env.DB_PASS,
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    }, (err: any) => {
     if(err) {   
         console.log(err.message)
     }else{
