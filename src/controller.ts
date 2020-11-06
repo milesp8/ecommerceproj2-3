@@ -3,6 +3,7 @@ import express from "express";
 import mongoose, { Document, Schema } from "mongoose";
 import Customers from "../schema/customerSchema";
 import Products from "../schema/productSchema";
+import Orders from "../schema/orderSchema";
 
 // dotenv config parsing env variables
 dotenv.config();
@@ -115,6 +116,56 @@ export class CustomerController {
                     createdCustomer: {
                         name: req.body.name,
                         email: req.body.email
+                    }
+                });
+            }
+        });
+    }
+}
+export class OrderController {
+    public getAllOrders(req: express.Request, res: express.Response): void{
+        const orders = Orders.find((err: any, products: any) => {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(products);
+            }
+        });
+    }
+    public getOrder(req: express.Request, res: express.Response): void {
+        Orders.findById(req.params.orderId, (err: any, order: any) => {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(order);
+            }
+        });
+    }
+    public deleteOrder(req: express.Request, res: express.Response): void{
+        Orders.findById(req.params.orderId, (err: any, order: any) => {
+            if (err){
+                res.send(err);
+            } else {
+                Orders.remove(order);
+            }
+        });
+    }
+    public addOrder(req: express.Request, res: express.Response): void{
+        const order = new Orders({
+            name: req.body.name,
+            variants: req.body.variants
+        });
+
+        // validate and save order
+        order.save((err: any) => {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(201).json({
+                    message: "Order created successfully",
+                    createdOrder: {
+                        name: req.body.name,
+                        variants: req.body.variants
                     }
                 });
             }
