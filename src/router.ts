@@ -25,6 +25,7 @@ export class ApiRouter {
         this.router.get("/allOrders", this.orderController.getAllOrders);
         this.router.get("/order/:orderId", this.orderController.getOrder);
         this.router.post("/addOrder", this.orderController.addOrder);
+        this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
 
         return this.router;
     }
