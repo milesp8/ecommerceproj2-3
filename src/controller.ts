@@ -76,7 +76,110 @@ export class ProductController {
 
     public updateProduct(req: express.Request, res: express.Response): void {
         const id = req.params.productId;
-        res.send(id);
+        const updateOps: {[update: string]: Array<Object>} = {};
+
+        for (const update of Object.keys(req.body)) { 
+
+            
+            //Store each "key": "value to be changed" from the request body into map 
+            updateOps[update] = req.body[update]
+
+            // if there is key: [Array of schemas. In this case "variants": [Array of variant schemas]
+            if(Array.isArray(updateOps[update])) { 
+
+                //for each variant in [array of variants to be changed]
+                for (const array_item of updateOps[update]) {
+
+                    // to store each variant key:value passed in to be changed
+                    let variant_items: {[item: string]: any} = {}
+
+                    // to store variantId of variant to be updated
+                    let variant_id = null
+
+                    // whether or not existing variantId was passed in
+                    let id_bool = false
+
+                    //if variant ObjectId was provided in body arguments (so we are updating an existing variant)
+                    if("_id" in array_item) {
+                        console.log("EXISTING VARIANT")
+                        variant_id = Object.values(array_item)[Object.keys(array_item).indexOf("_id")]
+                        id_bool = true
+                    } else {
+                        console.log("NEW VARIANT")
+                        variant_id = new mongoose.Types.ObjectId()
+                    }
+
+                    // two different key structures for update values depending on variant add or variant update.
+                    for (let item_key in array_item) {
+                        let item_key_update = null
+ 
+                        if(id_bool) {
+                            // structure of key: value, "variant.$.name": "some_name". Used for updating existing variant
+                            item_key_update = update.concat(".$.", item_key)
+                        } 
+                        else {
+                            // structure of key: value, "name": "some_name". Used for creating new variant
+                            item_key_update = item_key
+                        }
+                        variant_items[item_key_update] = Object.values(array_item)[Object.keys(array_item).indexOf(item_key)]
+                    }
+
+                    if (!id_bool) {
+                        //add new variant to the product using $push
+                        Products.findOneAndUpdate(
+                            {_id: id}, 
+                            {$push: {
+                                    "variants": {
+                                        $each: [ variant_items ] //variant add key:values
+                                    }
+                                }
+                            }, 
+                            {upsert: true}, (err, result) => {
+                                if(err ){
+                                    console.log(err)
+                                } else {
+                                    console.log("Variant was created and added!")
+                                }
+                            }
+                        )
+                    } else {
+                        //update existing variant of product
+                        Products.findOneAndUpdate(
+                            {_id: id, "variants._id": variant_id}, 
+                            variant_items,  //variant update key:values
+                            {new: true, upsert:true}, (err, result) => {
+                            if(err){
+                                console.log(err)
+                            } else {
+                                console.log("Variant was updated!")
+                            }
+                        })
+                    }
+
+                }
+
+            }
+            else {
+                // if we want to update existing key: single value
+                let update_obj: {[update: string]: any} = {}
+                update_obj[update] = updateOps[update]
+
+                console.log(update_obj)
+                Products.findOneAndUpdate(
+                    {_id: id}, 
+                    update_obj, //update key: single value
+                    {new: true, upsert:true}, (err, result) => {
+                    if(err ){
+                        console.log(err)
+                    } else {
+                        console.log("success")
+                    }
+                })
+            }
+        }
+
+        res.send()
+
     }
 }
 

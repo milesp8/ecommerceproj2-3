@@ -4,7 +4,7 @@ export const OrderItemSchema = new mongoose.Schema({
     product: {type: String, required: true},
     variant: {type: String, required: true},
     productId: {type: Number, required: true},
-    varientId: {type: Number, required: true},
+    variantId: {type: Number, required: true},
     price: {type: Number, required: true},
     quantity: {type: Number, required: true}
 });
