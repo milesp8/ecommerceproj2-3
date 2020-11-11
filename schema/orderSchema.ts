@@ -13,10 +13,9 @@ export const OrderItemSchema = new mongoose.Schema({
 export const OrderSchema = new mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
-    adress: {type: String, required: true},
-
-    // stores array of Item schemas in the Order
-    variants: {type: [OrderItemSchema], default: undefined, required: true}
+    address: {type: String, required: true},
+    total: {type: Number, required: true},
+    products: {type: [OrderItemSchema], default: undefined, required: true}
 
 });
 

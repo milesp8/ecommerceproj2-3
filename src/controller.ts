@@ -80,7 +80,7 @@ export class ProductController {
 
         for (const update of Object.keys(req.body)) { 
 
-            
+
             //Store each "key": "value to be changed" from the request body into map 
             updateOps[update] = req.body[update]
 
@@ -155,9 +155,7 @@ export class ProductController {
                             }
                         })
                     }
-
                 }
-
             }
             else {
                 // if we want to update existing key: single value
@@ -254,9 +252,18 @@ export class OrderController {
         });
     }
     public addOrder(req: express.Request, res: express.Response): void{
+
+        const orderInfo = [];
+        for (const item_order of req.body.orderInfo) {
+            orderInfo.push(item_order);
+        }
+
         const order = new Orders({
             name: req.body.name,
-            variants: req.body.variants
+            email: req.body.email,
+            address: req.body.address,
+            total: req.body.total,
+            products: req.body.variants
         });
 
         // validate and save order
