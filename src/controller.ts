@@ -224,6 +224,32 @@ export class CustomerController {
     }
 }
 export class OrderController {
+    public updateOrder(req: express.Request, res: express.Response): void{
+        const id = req.params.orderId;
+        const updateOps: {[update: string]: Array<Object>} = {};
+        for (const update of Object.keys(req.body)) { 
+
+            //Store each "key": "value to be changed" from the request body into map 
+            updateOps[update] = req.body[update]
+
+            let update_obj: {[update: string]: any} = {}
+            update_obj[update] = updateOps[update]
+
+            console.log(update_obj)
+            Orders.findOneAndUpdate(
+                {_id: id}, 
+                update_obj, //update key: single value
+                {new: true, upsert:true}, (err, result) => {
+                if(err ){
+                    console.log(err)
+                } else {
+                    console.log("success")
+                }
+            })
+        }
+        res.send()
+
+    }
     public getAllOrders(req: express.Request, res: express.Response): void{
         const orders = Orders.find((err: any, products: any) => {
             if (err) {
