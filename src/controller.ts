@@ -280,7 +280,7 @@ export class OrderController {
     public addOrder(req: express.Request, res: express.Response): void{
 
         const orderInfo = [];
-        for (const item_order of req.body.orderInfo) {
+        for (const item_order of req.body.products) {
             orderInfo.push(item_order);
         }
 
@@ -289,7 +289,8 @@ export class OrderController {
             email: req.body.email,
             address: req.body.address,
             total: req.body.total,
-            products: req.body.variants
+            deliverydate: req.body.deliverydate,
+            products: req.body.products
         });
 
         // validate and save order
@@ -301,7 +302,7 @@ export class OrderController {
                     message: "Order created successfully",
                     createdOrder: {
                         name: req.body.name,
-                        variants: req.body.variants
+                        products: req.body.products
                     }
                 });
             }
