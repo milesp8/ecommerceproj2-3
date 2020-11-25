@@ -1,9 +1,11 @@
 import dotenv, { config } from "dotenv"
 import express from "express";
 import mongoose, { Document, Schema } from "mongoose";
+
 import Customers from "../schema/customerSchema";
 import Products from "../schema/productSchema";
 import Orders from "../schema/orderSchema";
+import User from "../schema/userSchema";
 
 // dotenv config parsing env variables
 dotenv.config();
@@ -179,6 +181,30 @@ export class ProductController {
         res.send()
 
     }
+    public deleteProduct(req: express.Request, res: express.Response): void {
+        const id = req.params.productId;
+
+        Products.remove({_id: id}, function (err) {
+            if(err) {   
+                res.send(err); 
+            } else {
+                res.send("Successfully deleted product");
+            }
+        });
+    }
+
+    public deleteVariant(req: express.Request, res: express.Response): void {
+        const id = req.params.variantId;
+
+        Products.deleteOne({_id: id}, function (err) {
+            if(err) {   
+                res.send(err); 
+            } else {
+                res.send("Successfully deleted variant");
+            }
+        });
+    }
+
 }
 
 export class CustomerController {
@@ -307,5 +333,15 @@ export class OrderController {
                 });
             }
         });
+    }
+}
+
+export class UserController {
+    public login(req: express.Request, res: express.Response): void{
+
+    }
+
+    public register(req: express.Request, res: express.Response): void{
+        
     }
 }

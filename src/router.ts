@@ -1,11 +1,12 @@
 import express from "express";
-import { CustomerController, OrderController, ProductController } from "./controller";
+import { CustomerController, OrderController, ProductController, UserController } from "./controller";
 
 export class ApiRouter {
     private router: express.Router = express.Router();
     private prodController: ProductController = new ProductController();
     private custController: CustomerController = new CustomerController();
     private orderController: OrderController = new OrderController();
+    private userController: UserController = new UserController();
 
     // Creates the routes for this router and returns a populated router object
     public getRouter(): express.Router {
@@ -15,6 +16,9 @@ export class ApiRouter {
         this.router.get("/allProducts", this.prodController.getAllProducts);
         this.router.post("/addProduct", this.prodController.addProduct);
         this.router.patch("/updateProduct/:productId", this.prodController.updateProduct);
+        this.router.delete("/deleteProduct/:productId", this.prodController.deleteProduct);
+        this.router.delete("/deleteVariant/:variantId", this.prodController.deleteVariant);
+
 
         // customer routes
         this.router.get("/allCustomers", this.custController.getAllCustomers);
@@ -26,6 +30,8 @@ export class ApiRouter {
         this.router.get("/order/:orderId", this.orderController.getOrder);
         this.router.post("/addOrder", this.orderController.addOrder);
         this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
+
+        this.router.post("/login", this.userController.login);
 
         return this.router;
     }
