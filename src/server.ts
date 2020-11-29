@@ -3,6 +3,8 @@ import express from "express";
 import { Session } from "inspector";
 
 import {ApiRouter} from "./router";
+import dotenv, { config } from "dotenv"
+import mongoose, { Document, Schema } from "mongoose";
 
 class Application {
     public app: express.Application;
@@ -14,6 +16,23 @@ class Application {
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(bodyParser.json());
         this.initCors();
+
+        dotenv.config();
+
+        // mongoose connection to db
+        mongoose.connect(process.env.DB_URI, {
+                dbName: process.env.DB_NAME,
+                user: process.env.DB_USER,
+                pass: process.env.DB_PASS,
+                useUnifiedTopology: true,
+                useNewUrlParser: true,
+            }, (err: any) => {
+            if (err) {
+                console.log(err.message);
+            } else {
+                console.log("Successfully connected to database");
+            }
+        });
     }
     // Starts the server on the port specified in the environment or on port 3000 if none specified.
     public start(): void {

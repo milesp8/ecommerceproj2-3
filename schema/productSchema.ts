@@ -1,18 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
-// Schema for each variant
-export const ProdInfoSchema = new mongoose.Schema({
-    variant: {type: String, required: true},
-    price: {type: Number, required: true},
-    quantity: {type: Number, required: true}
-});
-
 // schema for each prodcut
 export const ProductSchema = new mongoose.Schema({
     name: {type: String, required: true},
-
-    // stores array of variant schemas for that product
-    variants: {type: [ProdInfoSchema], default: undefined, required: true}
+    variantIds: [{type: mongoose.Types.ObjectId, default: undefined, ref:'Variants'}],
+    description: {type: String},
+    images: [{type: String}],
+    categories: [{type: mongoose.Types.ObjectId, required:false}]
 });
 
 // export product schema as model

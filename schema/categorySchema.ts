@@ -2,8 +2,8 @@ import mongoose, { Schema } from "mongoose";
 
 export const CategorySchema = new mongoose.Schema({
     name: {type: String, required: true},
-    productIds : {type: [String], required: true},
-    picurl: {type: String}
+    products : [{type: mongoose.Schema.Types.ObjectId, required: true, ref:'Products'}],
+    image: {type: String}
 });
 
 const Categories = mongoose.model("Category", CategorySchema);

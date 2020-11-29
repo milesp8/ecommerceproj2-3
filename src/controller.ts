@@ -2,11 +2,12 @@ import dotenv, { config } from "dotenv"
 import express from "express";
 import mongoose, { Document, Schema } from "mongoose";
 
-import Customers from "../schema/customerSchema";
 import Products from "../schema/productSchema";
+import Variants from "../schema/variantSchema";
 import Orders from "../schema/orderSchema";
 import User from "../schema/userSchema";
 
+/*
 // dotenv config parsing env variables
 dotenv.config();
 
@@ -47,20 +48,37 @@ export class ProductController {
         });
     }
 
-    public addProduct(req: express.Request, res: express.Response): void {
-        // get all variants for product from request body
+    public createProduct(req: express.Request, res: express.Response): void {
         const prodinfo = [];
-        for (const variant of req.body.variants) {
-            prodinfo.push(variant);
+        let prodVariant: Array<Object> = []  // keeps track of each variant name for the product
+        let varIdArr: Array<any> = []
+        let parentProdId = new mongoose.Types.ObjectId()
+
+        // create variants for product and store their variant ids in array for use in 
+        for (const variantObj of req.body.variants) {
+
+            let variantId = new mongoose.Types.ObjectId()
+            varIdArr.push(variantId)
+
+            console.log(variantObj)
+
+            const variant = new Variants({
+                _id: variantId,
+                name: variantObj.name,
+                parentProductId: parentProdId,
+                price: variantObj.price,
+                quantity: variantObj.quantity
+            })
+            variant.save();
         }
 
-        // create product using schema
         const product = new Products({
+            _id: parentProdId,
             name: req.body.name,
-            variants: prodinfo
+            variantIds: varIdArr,
+            description: req.body.description,
+            images: ["img_1"]
         });
-
-        // validate and save product
         product.save((err: any) => {
             if (err) {
                 res.send(err);
@@ -207,6 +225,7 @@ export class ProductController {
 
 }
 
+/*
 export class CustomerController {
     public getAllCustomers(req: express.Request, res: express.Response): void {
         const customers = Customers.find((err: any, customers: any) => {
@@ -248,100 +267,4 @@ export class CustomerController {
             }
         });
     }
-}
-export class OrderController {
-    public updateOrder(req: express.Request, res: express.Response): void{
-        const id = req.params.orderId;
-        const updateOps: {[update: string]: Array<Object>} = {};
-        for (const update of Object.keys(req.body)) { 
-
-            //Store each "key": "value to be changed" from the request body into map 
-            updateOps[update] = req.body[update]
-
-            let update_obj: {[update: string]: any} = {}
-            update_obj[update] = updateOps[update]
-
-            console.log(update_obj)
-            Orders.findOneAndUpdate(
-                {_id: id}, 
-                update_obj, //update key: single value
-                {new: true, upsert:true}, (err, result) => {
-                if(err ){
-                    console.log(err)
-                } else {
-                    console.log("success")
-                }
-            })
-        }
-        res.send()
-
-    }
-    public getAllOrders(req: express.Request, res: express.Response): void{
-        const orders = Orders.find((err: any, products: any) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(products);
-            }
-        });
-    }
-    public getOrder(req: express.Request, res: express.Response): void {
-        Orders.findById(req.params.orderId, (err: any, order: any) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(order);
-            }
-        });
-    }
-    public deleteOrder(req: express.Request, res: express.Response): void{
-        Orders.findById(req.params.orderId, (err: any, order: any) => {
-            if (err){
-                res.send(err);
-            } else {
-                Orders.remove(order);
-            }
-        });
-    }
-    public addOrder(req: express.Request, res: express.Response): void{
-
-        const orderInfo = [];
-        for (const item_order of req.body.products) {
-            orderInfo.push(item_order);
-        }
-
-        const order = new Orders({
-            name: req.body.name,
-            email: req.body.email,
-            address: req.body.address,
-            total: req.body.total,
-            deliverydate: req.body.deliverydate,
-            products: req.body.products
-        });
-
-        // validate and save order
-        order.save((err: any) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(201).json({
-                    message: "Order created successfully",
-                    createdOrder: {
-                        name: req.body.name,
-                        products: req.body.products
-                    }
-                });
-            }
-        });
-    }
-}
-
-export class UserController {
-    public login(req: express.Request, res: express.Response): void{
-
-    }
-
-    public register(req: express.Request, res: express.Response): void{
-        
-    }
-}
+}*/
