@@ -32,7 +32,7 @@ class Application {
             } else {
                 console.log("Successfully connected to database");
             }
-        });
+        }); 
     }
     // Starts the server on the port specified in the environment or on port 3000 if none specified.
     public start(): void {
@@ -50,7 +50,13 @@ class Application {
             res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
             res.header("Access-Control-Allow-Credentials", "true");
-            next();
+
+            if ('OPTIONS' == req.method) {
+                res.sendStatus(200);
+            } else {
+                console.log('${req.ip} ${req.method} ${req.url}')
+                next();
+            }
         });
     }
     // setup routes for the express server
