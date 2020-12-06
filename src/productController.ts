@@ -105,6 +105,7 @@ export class ProductController {
 
     // update fields for a product. Does not update the individual variant field values (use /editVariants route to edit variants data)
     public updateProduct(req: express.Request, res: express.Response): void {
+        console.log("Update Prod called")
         const prodId = req.params.productId;
         const updateOps: {[update: string]: Array<Object>} = {};
 

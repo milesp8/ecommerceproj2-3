@@ -22,19 +22,20 @@ export class ApiRouter {
         this.router.get("/product/:productId", this.prodController.getProduct);
         this.router.get("/allProducts", this.prodController.getAllProducts);
         this.router.post("/addProduct", this.checkAuth, this.prodController.createProduct);
-        this.router.patch("/updateProduct/:productId", this.checkAuth, this.prodController.updateProduct);
+        this.router.post("/updateProduct/:productId", this.checkAuth, this.prodController.updateProduct);
         this.router.delete("/deleteProduct/:productId", this.checkAuth, this.prodController.deleteProduct);
 
         // variant routes
         this.router.get("/getVariants/:parentProdId?", this.variantController.getVariants)
         this.router.post("/addVariants/:parentProdId", this.checkAuth, this.variantController.createVariants)
-        this.router.patch("/updateVariants", this.variantController.updateVariants)
+        this.router.post("/updateVariants", this.checkAuth, this.variantController.updateVariants)
         this.router.delete("/deleteVariants", this.checkAuth, this.variantController.deleteVariants)
 
-        this.router.get("/getCategories/:categoryId?", this.categoryController.getCategories)
+        // category routes
+        this.router.get("/category/:categoryId?", this.categoryController.getCategories)
         this.router.get("/getAllCategories", this.categoryController.getAllCategories)
         this.router.post("/createCategory", this.checkAuth, this.categoryController.createCategory)
-        this.router.post("/updateCategories/:categoryId", this.checkAuth, this.categoryController.updateCategory)
+        this.router.post("/updateCategory/:categoryId", this.checkAuth, this.categoryController.updateCategory)
         this.router.delete("/deleteCategory/:categoryId", this.checkAuth, this.categoryController.deleteCategory)
 
         // order routes
@@ -46,6 +47,11 @@ export class ApiRouter {
         // user routes
         this.router.post("/login", this.userController.login);
         this.router.post("/register", this.userController.register);
+
+        //check if auth valid 
+        this.router.post("/auth", this.checkAuth, function() {
+            return {message: "Auth successful"}
+        });
 
         /*
         // customer routes
