@@ -41,8 +41,8 @@ export class ApiRouter {
         // order routes
         this.router.get("/allOrders", this.checkAuth, this.orderController.getAllOrders);
         this.router.get("/order/:orderId", this.checkAuth, this.orderController.getOrder);
-        this.router.post("/addOrder", this.checkAuth, this.orderController.createOrder);
-        this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
+        this.router.post("/addOrder", this.orderController.createOrder);
+        this.router.delete("/deleteOrder/:orderId", this.checkAuth, this.orderController.deleteOrder);
 
         // user routes
         this.router.post("/login", this.userController.login);
