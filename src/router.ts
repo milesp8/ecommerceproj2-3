@@ -40,7 +40,7 @@ export class ApiRouter {
 
         // order routes
         this.router.get("/allOrders", this.orderController.getAllOrders);
-        this.router.get("/order/:orderId", this.checkAuth, this.orderController.getOrder);
+        this.router.get("/order/:orderId", this.orderController.getOrder);
         this.router.post("/addOrder", this.orderController.createOrder);
         this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
 
