@@ -96,6 +96,7 @@ export class VariantsController {
         let prodId = req.params.productId
 
         let updateOps: {[update: string]: any} = {};
+        /*
         for (let updateVar in req.body.variants) {
 
             console.log(updateVar)
@@ -106,7 +107,13 @@ export class VariantsController {
             } else {
                 console.log("Variant Id not found")
             }
-        }
+        }*/
+
+        Variants.findOneAndUpdate({"_id": req.body._id}, 
+        {"name": req.body.name,
+        "price": req.body.price,
+        "quantity": req.body.quantity, 
+        "images": req.body.images}).exec()
 
         res.status(200).json({
             message: "Variants edited and updated successfully"

@@ -16,7 +16,7 @@ export const OrderSchema = new mongoose.Schema({
     email: {type: String, required: true},
     address: {type: String, required: true},
     total: {type: Number, required: true},
-    items: {type: [[Object, String, Object, String, Number]], default: undefined, required: true},
+    items: {type: [[Object, String, Object, String, Number]], default: undefined},
     deliverydate: {type: String, required: true}
 });
 

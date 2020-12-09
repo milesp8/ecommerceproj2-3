@@ -47,7 +47,10 @@ export class OrderController {
     }
     public createOrder(req: express.Request, res: express.Response): void{
 
+        console.log("ORDER: ", req)
+
         const orderInfo = [];
+        
         for (const item_order of req.body.products) {
             orderInfo.push(item_order);
         }
