@@ -50,17 +50,14 @@ export class OrderController {
         console.log("ORDER: ", req)
 
         const orderInfo = [];
-        
-        for (const item_order of req.body.products) {
-            orderInfo.push(item_order);
-        }
+    
 
         const order = new Orders({
             name: req.body.name,
             email: req.body.email,
             address: req.body.address,
             total: req.body.total,
-            items: req.body.products,
+            items: req.body.items,
             deliverydate: req.body.deliverydate
         });
 
@@ -73,7 +70,7 @@ export class OrderController {
                     message: "Order created successfully",
                     createdOrder: {
                         name: req.body.name,
-                        products: req.body.products
+                        products: req.body.items
                     }
                 });
             }
