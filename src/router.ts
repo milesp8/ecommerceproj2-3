@@ -34,15 +34,15 @@ export class ApiRouter {
         // category routes
         this.router.get("/category/:categoryId?", this.categoryController.getCategories)
         this.router.get("/getAllCategories", this.categoryController.getAllCategories)
-        this.router.post("/createCategory", this.checkAuth, this.categoryController.createCategory)
+        this.router.post("/createCategory", this.categoryController.createCategory)
         this.router.post("/updateCategory/:categoryId", this.checkAuth, this.categoryController.updateCategory)
-        this.router.delete("/deleteCategory/:categoryId", this.checkAuth, this.categoryController.deleteCategory)
+        this.router.delete("/deleteCategory/:categoryId", this.categoryController.deleteCategory)
 
         // order routes
-        this.router.get("/allOrders", this.checkAuth, this.orderController.getAllOrders);
-        this.router.get("/order/:orderId", this.checkAuth, this.orderController.getOrder);
+        this.router.get("/allOrders", this.orderController.getAllOrders);
+        this.router.get("/order/:orderId", this.orderController.getOrder);
         this.router.post("/addOrder", this.orderController.createOrder);
-        this.router.delete("/deleteOrder/:orderId", this.checkAuth, this.orderController.deleteOrder);
+        this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
 
         // user routes
         this.router.post("/login", this.userController.login);
