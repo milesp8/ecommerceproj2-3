@@ -39,9 +39,9 @@ export class ApiRouter {
         this.router.delete("/deleteCategory/:categoryId", this.checkAuth, this.categoryController.deleteCategory)
 
         // order routes
-        this.router.get("/allOrders", this.checkAuth, this.orderController.getAllOrders);
+        this.router.get("/allOrders", this.orderController.getAllOrders);
         this.router.get("/order/:orderId", this.checkAuth, this.orderController.getOrder);
-        this.router.post("/addOrder", this.checkAuth, this.orderController.createOrder);
+        this.router.post("/addOrder", this.orderController.createOrder);
         this.router.delete("/deleteOrder/:orderId", this.orderController.deleteOrder);
 
         // user routes
